@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Graphics ex1 - Tomer & Adiel</title>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+    <script src="includes/js/script.js"></script>
+    <script src='includes/js/paint.js'></script>
+    <script src='includes/js/shapes.js'></script>
+    <script src='includes/js/misc.js'></script>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="includes/style/index.css">
+  </head>
+  <body>
+    <div id='Paint'>
+      <aside id='menu'>
+        <div>
+          <i class="fas fa-palette" id='colorPicker'></i>
+          <input id='txtColorPicker' type="color" name="favcolor" value="#000000" style="display:none;">
+        </div>
+        <div class='mode' data-mode='line'>
+          <i class="fas fa-grip-lines-vertical" title='קו ישר'></i>
+        </div>
+        <div class='mode' data-mode='circle'>
+          <i class="far fa-circle" title="עיגול"></i>
+        </div>
+        <div class='mode' data-mode='bezier'>
+        <i class="fas fa-bezier-curve" title="עקומת בזייה - 4 נקודות"></i>
+        </div>
+        <div class='mode' data-mode='free'>
+          <i class="fas fa-pencil-alt" title="ציור חופשי"></i>
+        </div>
+        <div>
+          <i class="fas fa-eraser" id="erase" title="ניקוי הלוח"></i>
+        </div>
+      </aside>
+      <main>
+        <canvas id='canvas' width="800px" height="550px"></canvas>
+      </main>
+    </div>
+  </body>
+</html>
