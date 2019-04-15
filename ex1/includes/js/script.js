@@ -34,6 +34,7 @@ function colorPicker_changed(){
   $('#colorPicker').css('color', SETTINGS.color);
   SETTINGS.ctx.strokeStyle =   SETTINGS.color;
   SETTINGS.ctx.fillStyle   =   SETTINGS.color;
+
   clearPoints();
 }
 function modeClick(){
@@ -41,5 +42,9 @@ function modeClick(){
   $(".mode.selected").not(this).removeClass("selected");
   $(this).toggleClass("selected");
   SETTINGS.mode = $(this).hasClass('selected') ? mode : null;
+
+  $("#bezier-accuracy").hide();
+  if(SETTINGS.mode==='bezier')
+    $("#bezier-accuracy").show();
   clearPoints();
 }

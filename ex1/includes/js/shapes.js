@@ -69,9 +69,9 @@ function drawBezier(){
     return false;
 
   let {ctx} = SETTINGS;
-  var accuracy = 0.001;
-  for (var i=0; i<1; i+=accuracy){
-    let p = bezier(i, SETTINGS.points[0], SETTINGS.points[1], SETTINGS.points[2], SETTINGS.points[3]);  //return bezier points accordint to p0...p3
+  var accuracy = Number($("#bezier-accuracy").val());
+  for (var i=0; i<=accuracy; i++){
+    let p = bezier(i/accuracy, SETTINGS.points[0], SETTINGS.points[1], SETTINGS.points[2], SETTINGS.points[3]);  //return bezier points accordint to p0...p3
     drawPixel(p.x, p.y);
   }
 

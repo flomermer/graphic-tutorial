@@ -18,6 +18,8 @@ body{
 }
 #Paint aside > div{
   padding: 20px;
+  text-align: center;
+  width: 100%;
 }
 #Paint aside i{
   font-size: 2em;
@@ -28,6 +30,15 @@ body{
 }
 #Paint aside .mode.selected{
   font-size: 1.7em;
+}
+#Paint aside input{
+  display: none;
+  outline: none;
+  margin-top: 5px;
+  width: 70px;
+  text-align: center;
+  border-radius: 10px;
+  padding: 5px;
 }
 #Paint main{
   width: 90%;
