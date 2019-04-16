@@ -1,6 +1,6 @@
 var SETTINGS = {
   color: '#000',
-  mode: 'line',
+  mode: null,
   ctx: null,
   points: [],
   dot_size: 1

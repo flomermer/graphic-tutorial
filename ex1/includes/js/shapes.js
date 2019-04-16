@@ -5,36 +5,22 @@ function drawLine(){
     return false;
   //here we have exactly 2 points in SETTINGS.points. draw a line between them:)
 
-  let {ctx} = SETTINGS;
   let p0 = SETTINGS.points[0];
   let p1 = SETTINGS.points[1];
 
   clearPoints();
-  let dx =  (p1.x-p0.x);
-  let dy =  (p1.y-p0.y);
-  let m  =  dy/dx;
-  let n  =  p0.y-m*p0.x;    //y-mx
-  console.log(`linear: ${m}X+${n}`);
-
-  let startX = p1.x>p0.x ? p0.x : p1.x;
-  let endX   = p1.x>p0.x ? p1.x : p0.x;
-  let startY = p1.y>p0.y ? p0.y : p1.y;
-  let endY   = p1.y>p0.y ? p1.y : p0.y;
-
-  for(let x=startX; x<=endX; x++){
-    let y = (m*x + n);
+  const dx =  (p1.x-p0.x);
+  const dy =  (p1.y-p0.y);
+  let steps   =   Math.abs(dx)>Math.abs(dy) ? Math.abs(dx) : Math.abs(dy);
+  const xInc  =   dx/steps;
+  const yInc  =   dy/steps;
+  let x = p0.x;
+  let y = p0.y;
+  for(let counter=0; counter<steps; counter++){
+    x = x+xInc;
+    y = y+yInc;
     drawPixel(x,y);
   }
-  for(let y=startY; y<=endY; y++){
-    let x = (y-n)/m; //x = (y-n)/m
-    drawPixel(x,y);
-  }
-
-  /* EASY WAY */
-  // ctx.beginPath();
-  // ctx.moveTo(p0.x, p0.y);
-  // ctx.lineTo(p1.x, p1.y);
-  // ctx.stroke();
 }
 
 function drawCircle(){
@@ -42,26 +28,19 @@ function drawCircle(){
     return false;
   //here we have exactly 2 points in SETTINGS.points. calculate radius and draw a circle.
 
-  let {ctx} = SETTINGS;
-  let p0 = SETTINGS.points[0];
-  let p1 = SETTINGS.points[1];
-  let radius = Math.sqrt(Math.pow(p1.x-p0.x,2) + Math.pow(p1.y-p0.y,2));
+  const p0 = SETTINGS.points[0];
+  const p1 = SETTINGS.points[1];
+  const radius = Math.sqrt(Math.pow(p1.x-p0.x,2) + Math.pow(p1.y-p0.y,2));
 
   clearPoints();
-  var step = 2*Math.PI/1000 //sensitivity of circle;
-  var h = p0.x;
-  var k = p0.y;
+  const sensitivity = 1000  //sensitivity of circle segments
+  const step = 2*Math.PI/sensitivity;
 
-   for(var theta=0;  theta < 2*Math.PI;  theta+=step){
-      var x = p0.x + radius*Math.cos(theta);
-      var y = p0.y - radius*Math.sin(theta);
-      drawPixel(x,y);
-    }
-
-  // easy way!!
-  // ctx.beginPath();
-  // ctx.arc(p0.x, p0.y, Math.round(radius), 0, 2 * Math.PI);
-  // ctx.stroke();
+  for(let theta=0;  theta < 2*Math.PI;  theta+=step){
+    let x = p0.x + radius*Math.cos(theta);
+    let y = p0.y - radius*Math.sin(theta);
+    drawPixel(x,y);
+  }
 }
 
 function drawBezier(){

@@ -2,7 +2,7 @@
 
 function paint(event){ //triggered when canvas clicked
   if(!SETTINGS.mode){
-    alert("לא נבחר מצב ציור");
+    alert("יש לבחור מצב ציור מסרגל הכלים");
     return false;
   }
   if(SETTINGS.mode==='free')
