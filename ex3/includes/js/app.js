@@ -110,7 +110,7 @@ function clearPolygons(){
   ctx.moveTo(0,0);
 
   for(let polygon of App.draws.polygons)
-    polygon.clear();
+    polygon.syncPoints();
 }
 
 function normalizePoints(){
@@ -133,17 +133,4 @@ function normalizePoints(){
     newPoints.push(newPoint);
   })
   App.org_points = newPoints;
-}
-function colorPicker_changed(){
-  let color = $(this).val();
-  App.settings.color = color;
-  $('#colorPicker').css('color', color);
-  App.canvas.ctx.strokeStyle =   color;
-  App.canvas.ctx.fillStyle   =   color;
-}
-function switchMode(){
-  let mode = $(this).attr("data-mode");
-  $(".mode.selected").not(this).removeClass("selected");
-  $(this).toggleClass("selected");
-  App.settings.mode = $(this).hasClass('selected') ? mode : null;
 }

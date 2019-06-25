@@ -3,7 +3,7 @@ class Polygon extends Shape{
     super();
     this.points_index =   points_index;
     this.color        =   color;
-    this.setOriginalPoints();
+    this.syncPoints();
   }
   draw(){
     if(!this.isVisible())
@@ -21,9 +21,6 @@ class Polygon extends Shape{
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
-  }
-  clear(){
-    this.setOriginalPoints();
   }
 
   oblique(deg){
@@ -82,7 +79,7 @@ class Polygon extends Shape{
   isVisible(){
     return (this.normal.z < 0);
   }
-  setOriginalPoints(){
+  syncPoints(){
     this.points = [];
     let orgPoints = [];
     for(let index of this.points_index)

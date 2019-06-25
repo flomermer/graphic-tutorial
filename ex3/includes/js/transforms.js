@@ -12,7 +12,7 @@
       polygon.orthographic();
   }
 
-/*Rotatation & Scale: implments on origin points*/
+/*global transformations*/
 const scale = (k) => {
   App.org_points.forEach((point, i) => {
     let newPoint = {
@@ -79,11 +79,5 @@ const rotateZ = (deg) => {
 
 const syncPoints = () => { //sync every polygon with it's concurrent global points
   for(let polygon of App.draws.polygons)
-    polygon.setOriginalPoints();
-  /*
-      example:
-        after RotationX(45) for example -> all of the global points would be changed
-        each Polygon continas a const array of its points as an index. for example: [1,6,8,2]
-        the syncPoints would sync the local points of the Polygon with the current global point value
-  */
+    polygon.syncPoints();
 }
