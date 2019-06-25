@@ -1,9 +1,17 @@
-var SETTINGS = {
-  color: '#000',
-  mode: null,
-  ctx: null,
-  points: [],
-  dot_size: 1
+let App = {
+  settings: {
+      color: '#000',
+      mode: 'line',
+  },
+  canvas: {
+    canvas:   null,
+    ctx:      null,
+    dot_size: 1,
+  },
+  draws: {
+    tmp_points: [],
+    shapes: []
+  }
 }
 
 $("document").ready(function(){
@@ -12,39 +20,36 @@ $("document").ready(function(){
     $("#colorPicker").click(() => $("#txtColorPicker").trigger("click"));
     $("#txtColorPicker").change(colorPicker_changed);
   /*menu modes*/
-    $(".mode").click(modeClick);
+    $(".mode").click(switchMode);
     $("#erase").click(clearClipboard);
 
   /*canvas*/
     $("#canvas").click(paint); //check paint.js
-    $("#canvas").mousemove(drawFree);
 })
 
 function initialize(){
-  $('#colorPicker').css('color', SETTINGS.color);
-  if(SETTINGS.mode)
-    $(`.mode[data-mode=${SETTINGS.mode}]`).addClass('selected');
+  $('#colorPicker').css('color', App.settings.color);
+  if(App.settings.mode)
+    $(`.mode[data-mode=${App.settings.mode}]`).addClass('selected');
 
-  SETTINGS.ctx = document.getElementById('canvas').getContext('2d');
+  App.canvas.canvas   =   document.getElementById('canvas');
+  App.canvas.ctx      =   App.canvas.canvas.getContext('2d');
 }
 
 function colorPicker_changed(){
   let color = $(this).val();
-  SETTINGS.color = color;
-  $('#colorPicker').css('color', SETTINGS.color);
-  SETTINGS.ctx.strokeStyle =   SETTINGS.color;
-  SETTINGS.ctx.fillStyle   =   SETTINGS.color;
+  App.settings.color = color;
+  $('#colorPicker').css('color', color);
+  App.canvas.ctx.strokeStyle =   color;
+  App.canvas.ctx.fillStyle   =   color;
 
-  clearPoints();
+  clearTmpPoints();
 }
-function modeClick(){
+function switchMode(){
   let mode = $(this).attr("data-mode");
   $(".mode.selected").not(this).removeClass("selected");
   $(this).toggleClass("selected");
-  SETTINGS.mode = $(this).hasClass('selected') ? mode : null;
+  App.settings.mode = $(this).hasClass('selected') ? mode : null;
 
-  $("#bezier-accuracy").hide();
-  if(SETTINGS.mode==='bezier')
-    $("#bezier-accuracy").show();
-  clearPoints();
+  clearTmpPoints();
 }

@@ -1,19 +1,8 @@
-function relMouseCoords(event){
-    var totalOffsetX = 0;
-    var totalOffsetY = 0;
-    var canvasX = 0;
-    var canvasY = 0;
-    var currentElement = this;
+function relMouseCoords(e){
+  const {canvas} = App.canvas;
+  const rect = this.canvas.getBoundingClientRect();
+  const x = Math.round( ((e.clientX - rect.left)  /   (rect.right - rect.left))   *   canvas.width  );
+  const y = Math.round( ((e.clientY - rect.top)   /   (rect.bottom - rect.top))   *   canvas.height );
 
-    do{
-        totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
-        totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
-    }
-    while(currentElement = currentElement.offsetParent)
-
-    canvasX = event.pageX - totalOffsetX;
-    canvasY = event.pageY - totalOffsetY;
-
-    return {x:canvasX, y:canvasY}
+  return new Pixel(x,y);
 }
-HTMLCanvasElement.prototype.relMouseCoords = relMouseCoords;

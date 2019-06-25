@@ -1,42 +1,47 @@
-//SETTINGS is global param and available here.
+//App is global param and available here.
 
-function paint(event){ //triggered when canvas clicked
-  if(!SETTINGS.mode){
+function paint(e){ //triggered when canvas clicked
+  const {mode} = App.settings;
+  if(!App.settings.mode){
     alert("יש לבחור מצב ציור מסרגל הכלים");
     return false;
   }
-  if(SETTINGS.mode==='free')
-    return false;
+  const pixel = relMouseCoords(e); //misc.js -> mouse clicked (x,y) coords according to canvas
+  markTmpPoint(pixel);
 
-  var point = canvas.relMouseCoords(event); //misc.js -> mouse clicked (x,y) coords according to canvas
-  markPoint(point);
-  switch(SETTINGS.mode){
+  let points = App.draws.tmp_points;
+  let shape;
+  switch(mode){
     case 'line':
-      drawLine();
+      if(points.length!==2) return;
+      shape = new Line(points[0], points[1]);
       break;
     case 'circle':
-      drawCircle();
-      break;
-    case 'bezier':
-      drawBezier();
-      break;
+      if(points.length!==2) return;
+      shape = new Circle(points[0], points[1]);
   }
+  shape.draw();
+  App.draws.shapes.push(shape);
+  clearTmpPoints();
 }
 
-function markPoint(point){
-  let {ctx,dot_size} = SETTINGS;
-  ctx.fillRect(point.x, point.y, dot_size, dot_size);
-  SETTINGS.points.push(point);
+function markTmpPoint(pixel){
+  pixel.draw();
+  App.draws.tmp_points.push(pixel);
 }
-function clearPoints(){
-  let {ctx,dot_size} = SETTINGS;
-  SETTINGS.points.forEach(p => {
-    ctx.clearRect(p.x, p.y, SETTINGS.dot_size, SETTINGS.dot_size)  ;
-  })
-  SETTINGS.points = [];
+
+function clearTmpPoints(){
+  const {ctx}    =   App.canvas;
+  for(let p of App.draws.tmp_points)
+    p.clear();
+
+  App.draws.tmp_points = [];
 }
+
 function clearClipboard(){
   if(!window.confirm("האם לנקות את הלוח?")) return false;
-  let {ctx} = SETTINGS;
-  ctx.clearRect(0,0, canvas.width, canvas.height);
+  for(let shape of App.draws.shapes)
+    shape.hide();
+
+  App.draws.shapes = [];
 }

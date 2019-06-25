@@ -1,0 +1,171 @@
+<!--Tomer Flom 303015671 & Adiel Perez 308101062 -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Graphics ex1 - Tomer & Adiel</title>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js" integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+
+    <script src="input/input.js"></script>
+    <script src="includes/js/app.js"></script>
+    <script src="includes/js/gui.js"></script>
+    <script src='includes/js/misc.js'></script>
+    <script src='includes/js/effect.js'></script>
+    <script src='includes/js/shapes/Shape.js'></script>
+    <script src='includes/js/shapes/Polygon.js'></script>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="includes/style/index.css">
+  </head>
+  <body>
+    <div id='Paint'>
+      <aside id='menu'>
+        <header>טעינת הקלט</header>
+        <div>
+          <i class="fas fa-upload" id='btnUploadInput' title='טעינת קובץ הקלט'></i>
+        </div>
+        <header>הטלות</header>
+        <div class="row">
+          <div class='proj' data-val="oblique"  title='Projection: Oblique'>
+            <i class="fas fa-cube"></i>
+          </div>
+          <div class='proj' data-val="perspective" title="Projection: Perspective">
+            <i class="fas fa-shapes"></i>
+          </div>
+          <div class='proj' data-val="orthographic" title="Projection: Orthographic">
+            <i class="fas fa-arrows-alt"></i>
+          </div>
+        </div>
+        <div class="row" style='display:none'>
+          <div>זווית(°):</div>
+          <div><input type='number' id="obliqueDeg" value='45'></input></div>
+        </div>
+        <header>סיבוב</header>
+        <div class='rotate'>
+          <div class='row'>
+            <div>ציר:</div>
+            <div>
+              <select id="slctAxis" class="rotation" data-field='axis'>
+                <option value="x">x</option>
+                <option value="y">y</option>
+                <option value="z">z</option>
+              </select>
+            </div>
+          </div>
+          <div class='row'>
+            <div>זווית(°):</div>
+            <div>
+              <input type='number' class="rotation" data-field='deg'></input>
+            </div>
+          </div>
+          <div class='row' title='Rotate'>
+            <i class='fas fa-sync-alt' id='rotate'></i>
+          </div>
+        </div>
+        <header>סילום</header>
+        <div class='rotate'>
+            <div class='row'>
+              <div>אחוזים: </div>
+              <div>
+                <input type='number' id="scalePercent" max=150 min=10 step=10></input>%
+              </div>
+            </div>
+            <div class='row center'>(מהגודל הנוכחי)</div>
+            <div class='row' title='Scale'>
+              <i class='fas fa-search' id="scale"></i>
+            </div>
+          </div>
+        <footer>
+          <div>Tomer & Adiel</div>
+        </footer>
+      </aside>
+      <main>
+        <div id='help' title="מדריך למשתמש"><i class='fas fa-question-circle'></i></div>
+
+        <canvas id='canvas' width="700px" height="525px"></canvas>
+      </main>
+    </div>
+
+    <div class="modal fade" id="modalHelp" style="display:none;">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <div>עזרה - מדריך למשתמש</div>
+                  <div class='secondary'>
+                    Tomer Flom & Adiel Perez
+                  </div>
+              </div>
+              <div class="modal-body">
+                <header class='row'>תחילת התוכנית</header>
+                <div class='row'>
+                  <div class='col-2' style='color:red'>הערה:</div>
+                  <div class='col-10 text-right'>ניתן לעבור עם העכבר על כל אחד מהאייקונים בתפריט על מנת לקבל הסבר.</div>
+                </div>
+                <div class='row'>
+                  <div class='col-2'><i class="fas fa-upload"></i></div>
+                  <div class='col-10 text-right'>
+                    טעינת קובץ הקלט (input/input.json)
+                    <div class='secondary'>
+                      (ניתן ללחוץ על האייקון על מנת לאפס את הנקודות לברירת המחדל)
+                      <br/>
+                      * בכל איפוס: המערכת תבחר צבע אקראי עבור כל אחד מהפוליגונים *
+                    </div>
+                  </div>
+                </div>
+
+                <header class='row'>הטלות \ Projections</header>
+                <div class='row'>
+                  <div class='col-2'><i class="fas fa-arrows-alt"></i></div>
+                  <div class='col-10 text-right'>
+                    הטלה אורתוגרפית מקבילה - Parallel Orthographic
+                  </div>
+                </div>
+                <div class='row'>
+                  <div class='col-2'><i class="fas fa-shapes"></i></div>
+                  <div class='col-10 text-right'>
+                    הטלה פרספקטיבית - Perspective
+                  </div>
+                </div>
+                <div class='row'>
+                  <div class='col-2'><i class="fas fa-cube"></i></div>
+                  <div class='col-10 text-right'>
+                    הטלה אלכסונית מקבילה - Parallel Oblique
+                    <div class='secondary'>
+                      עבור הטלה זו, ניתן לבחור את
+                      <b>זווית ההטלה(°)</b>.
+                    </div>
+                  </div>
+                </div>
+
+                <header class='row'>טרנספורמציות נוספות \ Transformations</header>
+                <div class='row'>
+                  <div class='col-2'><i class="fas fa-sync"></i></div>
+                  <div class='col-10 text-right'>
+                    סיבוב \ Rotate:
+                    <div class='secondary'>
+                      יש לבחור את <b>ציר הסיבוב</b> ואת <b>זווית הסיבוב(°)</b> ולאחר מכן ללחוץ על לחצן הסיבוב.
+                    </div>
+                  </div>
+                </div>
+                <div class='row'>
+                  <div class='col-2'><i class="fas fa-search"></i></div>
+                  <div class='col-10 text-right'>
+                    סילום \ Scale
+                    <div class='secondary'>
+                      יש לבחור את <b>אחוזי הסילום</b>. אחוזים אלה ילקחו מתוך <b>השלם הנוכחי</b>.
+                      <br/>
+                      למשל: 80% ולחיצה על לחצן הסילום יקטינו את השלם הנוכחי ב20%.
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+          </div>
+      </div>
+    </div><!--end modalHelp-->
+  </body>
+</html>
